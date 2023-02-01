@@ -8,10 +8,10 @@ app.use(express.json());
 const users = [];
 
 app.post("/user", (request, response) => {
-  const { cpf, name } = request.body;
+  const { username, name } = request.body;
 
   const userAlreadyExists = users.some(
-    (customer) => customer.cpf === cpf); 
+    (user) => user.username === username); 
 
   //Retornando status se o usuário já existir:   
   if (userAlreadyExists) {
@@ -19,16 +19,29 @@ app.post("/user", (request, response) => {
   }
 
   users.push({
-    cpf,
+    username,
     name,
     id: uuidv4(),
+    todos: [],
   });
 
   return response.status(201).send();
 })
 
-app.post("/cro", (request, response) => {
+app.get("/todos", (request, response) => {
+  const { username } = request.headers;
 
+  const user = users.find(user => user.username === username);
+
+  if (!user) {
+    return response.status(400).json({ error: "usuário não encontrado" })
+  }
+
+  return response.json(user.todos)
+})
+
+app.post("/newtodo", (request, response) => {
+  
 })
 
 app.listen(3333);
