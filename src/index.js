@@ -41,7 +41,21 @@ app.get("/todos", (request, response) => {
 })
 
 app.post("/newtodo", (request, response) => {
-  
+  const { title, deadline } = request.body; 
+
+  const { user } = request;
+
+  const todoOperation = {
+    id: uuidv4(),
+    title: '',
+    done: false, 
+    deadline: new Date(deadline), 
+	  created_at: new Date()
+  }
+
+  user.todos.push(todoOperation);
+
+  return response.status(201).send();
 })
 
 app.listen(3333);
