@@ -3,12 +3,7 @@ import http from 'node:http'
 import { json } from './middlewares/json.js';
 import { routes } from './routes.js';
 
-// const express = require('express');
-// const { v4: uuidv4 } = require("uuid");
-
 // const app = express();
-
-// app.use(express.json());
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;

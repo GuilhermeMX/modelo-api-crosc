@@ -29,5 +29,10 @@ export const routes = [
 
       return res.writeHead(201).end()
     }
+  },
+  {
+    method: 'DELETE',
+    path: '/users',
+    handler,
   }
 ]
