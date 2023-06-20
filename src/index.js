@@ -10,8 +10,9 @@ const server = http.createServer(async (req, res) => {
 
   await json(req, res)
 
+  // Testando se o regex bate com a url da requisição
   const route = routes.find(route => {
-    return route.method == method && route.path == url; 
+    return route.method == method && route.path.test(url); 
   })
 
   if (route) {
