@@ -38,6 +38,17 @@ export class Database {
     return data;
   }
 
+  update(table, id, data) {
+    //Procurando se existe um usuário com ID correspondente
+    const rowIndex = this.#database[table].findIndex(row => row.id === id);
+
+    // Se existir, remove e salva o banco
+    if (rowIndex > -1) {
+      this.#database[table][rowIndex] = { id, ...data } //Substituindo os dados antigos pelo data do request
+      this.#persist;
+    }
+  }
+
   delete(table, id) {
     //Procurando se existe um usuário com ID correspondente
     const rowIndex = this.#database[table].findIndex(row => row.id === id);

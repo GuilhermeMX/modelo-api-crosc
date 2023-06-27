@@ -32,6 +32,21 @@ export const routes = [
     }
   },
   {
+    method: 'PUT',
+    path: buildRoutePath('/users/:id'),
+    handler: (req, res) => {
+      const { id } = req.params //Coletando o id de forma desestruturada. Também pode ser feito por: const id = req.params.id
+      const { name, email } = req.body
+
+      database.update('users', id, {
+        name,
+        email,
+      })
+      
+      return res.writeHead(204).end() //Código http de sucesso que não retorna conteúdo
+    },
+  },
+  {
     method: 'DELETE',
     path: buildRoutePath('/users/:id'),
     handler: (req, res) => {
