@@ -2,6 +2,7 @@ import http from 'node:http'
 
 import { json } from './middlewares/json.js';
 import { routes } from './routes.js';
+import { extractQueryParams } from './utils/extract-query-params.js';
 
 // const app = express();
 
@@ -18,64 +19,17 @@ const server = http.createServer(async (req, res) => {
   if (route) {
     const routeParams = req.url.match(route.path);
 
-    req.params = { ...routeParams.groups }
+    // Declarando as variáveis de forma desestruturada de dentro da variável routeParams
+    const { query, ...params } = routeParams.groups
+
+    req.params = params
+    req.query = query ? extractQueryParams(query) : {} // Especificando que se o meu query estiver vazio, ele retornará um objeto vazio e não quebrará a aplicação
      
     return route.handler(req, res);
   }
 
   return res.writeHead(404).end();
 })
-
-// app.post("/users", (request, response) => {
-//   const { username, name } = request.body;
-
-//   const userAlreadyExists = users.some(
-//     (user) => user.username === username); 
-
-//   //Retornando status se o usuário já existir:   
-//   if (userAlreadyExists) {
-//     return response.status(400).json({error: "Este usuário já existe!"});
-//   }
-
-//   users.push({
-//     username,
-//     name,
-//     id: uuidv4(),
-//     todos: [],
-//   });
-
-//   return response.status(201).send();
-// })
-
-// app.get("/todos", (request, response) => {
-//   const { username } = request.headers;
-
-//   const user = users.find(user => user.username === username);
-
-//   if (!user) {
-//     return response.status(400).json({ error: "usuário não encontrado" })
-//   }
-
-//   return response.json(user.todos)
-// })
-
-// app.post("/newtodo", (request, response) => {
-//   const { title, deadline } = request.body; 
-
-//   const { user } = request;
-
-//   const todoOperation = {
-//     id: uuidv4(),
-//     title: '',
-//     done: false, 
-//     deadline: new Date(deadline), 
-// 	  created_at: new Date()
-//   }
-
-//   user.todos.push(todoOperation);
-
-//   return response.status(201).send();
-// })
 
 server.listen(3333);
 
