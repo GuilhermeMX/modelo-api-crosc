@@ -11,10 +11,10 @@ export const routes = [
     handler: (req, res) => {
       const { search } = req.query;
 
-      const users = database.select('users', {
+      const users = database.select('users', search ? { // Verificando se existe algo no campo search. Se não, meu search vira null e listo todos os registros
         name: search,
         email: search,
-      })
+      } : null)
 
       return res.end(JSON.stringify(users))
     }
